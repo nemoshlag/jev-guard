@@ -19,7 +19,12 @@ dependencies = [
 jev-guard = "jev_guard.cli:main"
 
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.6", "pip-audit>=2.7"]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "pip-audit>=2.7",
+    "pytest-cov>=7.1.0",
+]
 
 [build-system]
 requires = ["setuptools>=77"]
@@ -38,3 +43,7 @@ ignore = ["B008"]  # FastAPI Depends() idiom
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
