@@ -28,8 +28,23 @@ def _scan(args: argparse.Namespace) -> int:
 
 
 def _serve(args: argparse.Namespace) -> int:
+    import ipaddress
+
     import uvicorn
 
+    settings = Settings.from_env()
+    try:
+        loopback = args.host == "localhost" or ipaddress.ip_address(args.host).is_loopback
+    except ValueError:
+        loopback = False
+    if settings.api_key is None and not loopback:
+        print(
+            "error: JEV_GUARD_API_KEY is required when binding to a non-loopback host",
+            file=sys.stderr,
+        )
+        return 2
+    if settings.api_key is None:
+        print("warning: API auth disabled (loopback only)", file=sys.stderr)
     uvicorn.run("jev_guard.api:create_app", factory=True, host=args.host, port=args.port)
     return 0
 

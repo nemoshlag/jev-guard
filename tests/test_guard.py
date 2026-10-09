@@ -83,3 +83,10 @@ def test_api_auth_and_scan():
             == 413
         )
         assert c.get("/healthz").status_code == 200
+
+
+def test_serve_refuses_public_bind_without_key(monkeypatch):
+    from jev_guard.cli import main
+
+    monkeypatch.delenv("JEV_GUARD_API_KEY", raising=False)
+    assert main(["serve", "--host", "0.0.0.0"]) == 2  # noqa: S104

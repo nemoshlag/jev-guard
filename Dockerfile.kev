@@ -1,11 +1,11 @@
 # Experimental: runs the open Jev-compatible Kev server (Apache-2.0) from a pinned commit.
 # https://github.com/jaredpalmer/kev  -- CPU works but is slow; for CUDA use an NVIDIA
 # runtime and a CUDA-enabled torch build.
-FROM python:3.13-slim
+FROM python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
 ARG KEV_REF=5e42a7a03f28134853dd3ff77461457e921e5ec1
 RUN apt-get update && apt-get install -y --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/*
-COPY --from=ghcr.io/astral-sh/uv:0.11 /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.11@sha256:77280f2f771df71f90786c314fe1bbc1e023feac652969bbf139c280babf2eb7 /uv /usr/local/bin/uv
 RUN useradd --system --uid 10001 --create-home app
 USER app
 WORKDIR /home/app
