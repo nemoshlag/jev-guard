@@ -14,8 +14,10 @@ Local PII (Personally Identifiable Information) detection and guarding, powered 
 
 ## Installation
 
+This project uses [uv](https://github.com/astral-sh/uv) for dependency management.
+
 ```bash
-pip install -e .
+uv sync
 ```
 
 ## Usage
@@ -29,8 +31,8 @@ import jev_guard
 ## Development
 
 ```bash
-pip install -e ".[dev]"
-pytest
+uv sync --extra dev
+uv run pytest
 ```
 
 ## License
