@@ -1,0 +1,44 @@
+services:
+  guard:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080" # loopback only; put a TLS proxy in front to expose
+    environment:
+      JEV_GUARD_JEV_URL: ${JEV_GUARD_JEV_URL:-}
+      JEV_GUARD_JEV_MODEL: ${JEV_GUARD_JEV_MODEL:-jev-latest}
+      JEV_GUARD_JEV_API_KEY: ${JEV_GUARD_JEV_API_KEY:-}
+      JEV_GUARD_ALLOW_INSECURE_HTTP: ${JEV_GUARD_ALLOW_INSECURE_HTTP:-false}
+      JEV_GUARD_THRESHOLD: ${JEV_GUARD_THRESHOLD:-0.5}
+      JEV_GUARD_API_KEY: ${JEV_GUARD_API_KEY:?set JEV_GUARD_API_KEY in .env}
+    networks: [backend, default]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  # Optional local classifier: docker compose --profile local-model up
+  jev:
+    profiles: [local-model]
+    build:
+      context: .
+      dockerfile: Dockerfile.kev
+    command: ["--run", "${KEV_MODEL:-jaredpalmer/kev-4b}"]
+    # No published ports: only reachable from the guard over the internal network.
+    # `default` gives egress for the first model download; once the cache volume is
+    # warm, drop it and set HF_HUB_OFFLINE=1 for a fully air-gapped classifier.
+    networks: [backend, default]
+    environment:
+      KEV_API_KEY: ${JEV_GUARD_JEV_API_KEY:-}
+    volumes:
+      - hf-cache:/home/app/.cache/huggingface
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+networks:
+  backend:
+    internal: true
+
+volumes:
+  hf-cache:
