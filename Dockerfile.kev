@@ -1,7 +1,7 @@
 # Experimental: runs the open Jev-compatible Kev server (Apache-2.0) from a pinned commit.
 # https://github.com/jaredpalmer/kev  -- CPU works but is slow; for CUDA use an NVIDIA
 # runtime and a CUDA-enabled torch build.
-FROM python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
+FROM python:3.14-slim@sha256:f85c5697265c178cc6887276c55fe16cf3d14ca35c3df6a5eab3b360534a55d2
 ARG KEV_REF=5e42a7a03f28134853dd3ff77461457e921e5ec1
 RUN apt-get update && apt-get install -y --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/*
