@@ -1,5 +1,9 @@
 # jev-guard
 
+[![CI](https://github.com/nemoshlag/jev-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/nemoshlag/jev-guard/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/nemoshlag/jev-guard/actions/workflows/codeql.yml/badge.svg)](https://github.com/nemoshlag/jev-guard/actions/workflows/codeql.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
 Local PII detection that combines **regex detectors** ([Microsoft Presidio](https://github.com/microsoft/presidio) recognizers) with a **Jev-style classifier** for context-dependent PII that patterns can't catch. Run the classifier locally, or point at a remote endpoint, behind a small REST API / CLI / Docker Compose stack.
 
 > Status: early (0.1). PCI and PHI categories are planned; the code is already category-driven.
@@ -73,6 +77,15 @@ Note: classifier-only hits flag the text but have no offsets, so they are **not 
 - Container: non-root, read-only filesystem, all capabilities dropped, API bound to `127.0.0.1`; the model container publishes no ports.
 - Put a TLS-terminating proxy in front before exposing the API beyond localhost. See [SECURITY.md](SECURITY.md).
 - Detection is probabilistic: don't treat a "clean" result as a guarantee.
+
+## Supported entities and limitations
+
+- Regex: `EMAIL_ADDRESS`, `CREDIT_CARD`, `US_SSN`, `PHONE_NUMBER`, `IP_ADDRESS`, `IBAN_CODE`. Names and addresses are only caught by the classifier.
+- The classifier returns one probability per category, with no offsets (so no redaction for its hits).
+- Only the `pii` category exists today; PCI and PHI are planned.
+- Detection quality has not been benchmarked yet; expect false positives and negatives.
+- Not legal or compliance advice: using this tool does not make you GDPR, HIPAA or PCI-DSS compliant.
+- Not affiliated with TypeSafe AI, Kev or Microsoft Presidio; see [NOTICE](NOTICE) for third-party licenses.
 
 ## Development
 

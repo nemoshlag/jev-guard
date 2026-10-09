@@ -10,5 +10,4 @@ Rules:
 - Never log request text or matched values.
 - New categories (e.g. PCI, PHI) are added to `CATEGORY_QUESTIONS` in `jev_guard/detectors/jev.py`, with regex recognizers where applicable.
 
-By contributing you agree your work is licensed under Apache-2.0. Be respectful; we follow the
-[Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+By contributing you agree your work is licensed under Apache-2.0. Be respectful; see the [Code of Conduct](CODE_OF_CONDUCT.md).

@@ -1,0 +1,12 @@
+Jev Guard
+Copyright 2026 nemoshlag
+
+This product is not affiliated with or endorsed by TypeSafe AI (Jev), the Kev
+project, or Microsoft (Presidio).
+
+Third-party software and models (see each project for its own license):
+- Microsoft Presidio (presidio-analyzer) - MIT
+- Kev (https://github.com/jaredpalmer/kev) - Apache-2.0; its model weights are
+  derived from Qwen base models under their own licenses. Review them before use.
+- FastAPI, Starlette, Uvicorn, httpx, Pydantic - BSD/MIT
+- Hosted Jev is a commercial service subject to TypeSafe AI's terms.
