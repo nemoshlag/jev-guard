@@ -95,7 +95,7 @@ uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
 
-`Dockerfile.kev` (local model) pins a Kev commit and has not been validated on GPU hosts; the classifier models are far larger than the guard image.
+`Dockerfile.kev` (local model) pins a Kev commit and has not been validated on GPU hosts. Memory: Kev-4B needs about 10 GB+ of RAM available to Docker on CPU (exit code 137 = out of memory); for small machines set `KEV_MODEL=jaredpalmer/kev-0.8b` in `.env`. The first start downloads about 8 GB of weights.
 
 ## Contributing & license
 
