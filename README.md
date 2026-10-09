@@ -46,6 +46,24 @@ curl -s localhost:8080/v1/scan -H "Authorization: Bearer $KEY" \
 | `JEV_GUARD_THRESHOLD` | Classifier probability that counts as PII (default `0.5`) |
 | `JEV_GUARD_MAX_CHARS` | Max request size (default `100000`) |
 
+## Demo
+
+```bash
+uv sync && uv run python demo/demo.py
+```
+
+Starts a mock classifier (keyword heuristic, no model needed) and the guard API, then scans four samples over REST:
+
+```
+sample                        PII?   regex findings              classifier
+Clean text                    no     -                           {'pii': 0.04}
+Regex-detectable              YES    CREDIT_CARD,EMAIL_ADDRESS   {'pii': 0.04}
+Context-only (regex misses)   YES    -                           {'pii': 0.94}
+Both                          YES    EMAIL_ADDRESS,PHONE_NUMBER  {'pii': 0.94}
+```
+
+Note: classifier-only hits flag the text but have no offsets, so they are **not redacted**; only regex findings are. Swap the mock for real Kev/Jev via the configuration below.
+
 ## Data security
 
 - **Local by default.** With no classifier URL nothing leaves the process. Using hosted Jev sends your text to a third party; choose that deliberately.
